@@ -1,0 +1,25 @@
+-------- NOTICE ------------  2013-03-13
+Project is temporarily on hold until I can get a newer computer that can run Mountain Lion. Mountain Lion doesn't run on my Mac Pro 1,1 sadly, and I'm still stuck with XCode 3. I can't migrate to XCode 4 on Snow Leopard anymore it seems (since all the newer versions of XCode 4 require Lion or higher).
+
+I need to redo all the portions of the project that involve interface builder plugins, since it truly seems they're dead. *Sigh* I know I've put it off for a while, but I have been working full time and attempting to save up money for a newer computer. I *hope* to have a new computer by May/June.
+-----------------------------
+
+A Mac OS X port of the popular 68K Assembler/Simulator, EASy68K. Port is being done as my CSS 497 Capstone project as part of my Computing & Software Systems degree at the University of Washington: Bothell campus. 
+
+EASy68K can be downloaded from: http://www.easy68k.com
+
+Some quick notes:
+
+The editor is not fully featured as far as a text editor. There is currently no syntax coloring, or quick comment/uncomment buttons.
+
+The editor assembler options are all implemented, but the template/editor options preference tabs are not. There is little GUI feedback with regard to errors in your assembly sent
+
+The editor has little GUI feedback in the way of errors. For now, you'll have to open Console.app (located in /Applications/Utilities/) to see what kind of errors you have.
+
+Assembling the file will put the listfile and s-record in the same directory and won't give any indication of success. You'll have to manually open Sim68K and open an s-record file.
+
+The simulator buttons are not disabled if a program is not running, but they should disable if you hit "run" and are having a continuously branching program (all except the "pause" button).
+
+Error output in the Simulator is now output in the window. Memory browser and I/O are implemented, as is the Stack window. Direct editing of 68K memory is not yet supported.
+
+All other features aren't yet implemented either, but are on the list :)
