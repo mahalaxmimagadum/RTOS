@@ -26,6 +26,7 @@ Explanation of the startup behaviour
 The startup behaviour for the designed runtime system involves execution of reset routine (‘res’) in response to the system reset. Reset typically refers to the initialization and preparation of the system for execution. This includes setting initial values, configuring data structures, and readying tasks or processes for execution. 
 In the code to begin with, the status register(‘sr’) is set to a specific value, potentially configuring interrupt levels and other system-specific settings, initializes register ‘d0’ to 0 and system time variable(‘time’) to 0. Next it initializes the TCBs by iterating through the TCB list, marks each TCB as unused(‘tcbused(a0)’), advances to the next TCB in the list and repeats until all TCBs are initialized. The address of the user code(‘usrcode’) is loaded into the register ‘d0’. Pc is set, ‘#$00002000, d0’ configures the status register in the TCB sets the status register in TCB and marks the TCB as used and links the TCB to the ready task list. ‘and     #%1111100011111111, sr’ clears certain bits in the status register, potentially adjusting the interrupt levels. ‘jmp usrcode’ jumps the user code(‘usrcode’) to initiate normal system operation. During the initial execution the interrupt vectors are also involved (‘fltint’ and ‘flsint’) to configure timmer interrupts and system call traps respectively. The dispatcher(‘disp’) is called during the timer interrupt handling (‘fltint’) which then finds out which is the next task from the ready list and restores its content by switching the execution from the current task to the next task. During the initial startup behaviour, the runtime system does not create additional tasks automatically. 
 Description of User Functions and Parameters
+
 •	Create Task
 The create task routine is responsible for establishing a new task within the task environment. It involves allowing necessary resources such as memory and defining the execution parameters for the task which include start address of the new task and the address of the top of the stack. 
 In the beginning, task ID is loaded into a register ‘d0’. Register ‘d1’ is set to 0. The code then searches for an unused Task Control Block(TCB) in a TCB list(‘tcblist’) by iterating though the list until an unused TCB is found. Having found an unused TCB, it sets the program counter(‘tcbpc’), status register(‘tcbsr’), and stack pointer(‘tcba7’) in the TCB. Thus marking the TCB as used(‘tcbused’). TCB linked list is updated, linking the new TCB to the ready task list. Lastly, branches to the scheduler(‘sched’) to handle task scheduling.
@@ -38,6 +39,8 @@ Top-of-stack represents the memory location that points to the top stack of the 
                         move.l  d1, tcbpc(a0)
                         move.l  #$00002000, tcbsr(a0)
                         move.l #$01000000,tcba7(a0)
+
+
 •	Delete Task
 The Delete task routine has to terminate the task and remove the TCB from the list and mark as unused and also return the memory allocated to the task to the system.
 Firstly, the code Initializes the pointer ‘a0’ to the beginning of the TCB list (‘#$12000’) and ‘d1’ to the total number of TBC’s. The search for the task in the TCB list begins, it iterates through the tcb list to find a tcb marked as in use (‘tcbused(a0) ==1’). If the match is found it proceeds to the “Task_Found”. In the “Task_Found”, it updates the TCB linked list to bypass the TCB being deleted. Connects the previous                                               
@@ -84,16 +87,22 @@ Parameters: Wait time specifies the number of time intervals that the requesting
 
 Execution Time Analysis
 The Execution time analysis section provides a detailed examination of the estimated execution times for key functions within runtime system. Understanding the time complexity of these functions is crucial for assessing the overall performance and responsiveness of the system.
+
 CREATE TASK
 Creating the task from the task list, which might vary based on the number of tasks.                                                       Could be in the range of 45-60 Instructions.
+
 DELETE TASK
 Deleting a task from the task list. Varies based on the number of tasks,                                                                     Could be in the range of 75-85 Instructions.
+
 WAIT MUTEX
 This deals with the mutex initialization ensuring access to the shared variable.                                                      Could be in the range of 70-85 Instructions.
+
 SIGNAL MUTEX
 This system call deals with signalling of the mutex and update the mutex availability.                                                Could be in the range of 75-95 Instructions.
+
 INITIALIZATION MUTEX
 Initialize mutex system call is responsible for setting up a mutex, initializing its state, and making it ready for use by tasks. Could be in the range of 55-75 Instructions.
+
 WAIT TIME
 This part of the analysis focuses on the system call for waiting on a timer.                                                             Could be in the range of 85-95 Instructions.
 
