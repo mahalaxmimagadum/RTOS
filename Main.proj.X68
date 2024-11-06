@@ -1,8 +1,6 @@
 *-----------------------------------------------------------
-* Title      : RTS
-* Written by : Meghana,Hariharan,Mahalakshmi
-* Date       : Jan 25
-* Description: Time Slicing and Multitasking RunTime System 
+ Title      : RTS
+ Time Slicing and Multitasking RunTime System 
 *-----------------------------------------------------------
                                 ; system call equates
 sys     equ     0               ; system call trap (trap 0)
